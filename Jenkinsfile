@@ -5,7 +5,8 @@ pipeline{
             agent {
                 docker {
                     image 'openjdk:11'
-		    args '-u root:sudo -v /var/lib/jenkins/workspace/CI-Java_Gradle_Project:/CI-Java_Gradle_Project'
+		    #args '-u root:sudo -v /var/lib/jenkins/workspace/CI-Java_Gradle_Project:/CI-Java_Gradle_Project'
+		    args '-u root:root'
                 }
             }
            steps{
