@@ -1,23 +1,28 @@
-pipeline {
-     agent any
-     environment{
-        VERSION = "${env.BUILD_ID}"
-    }
-    stages {
-          stage('Building') {
-             steps {
-                  sh 'chmod +x gradlew'
-                  sh "./gradlew build   |  tee output.log"
-                   }
-                }
-                stage('Monitoring the logs') {
-                    steps {
-                        script {
-                                sh '! grep "Task" output.log'
-                        }
+pipeline{
+    agent any 
+    stages{
+        stage("sonar quality check"){
+            
+           steps{
+                script{
+                    withSonarQubeEnv(credentialsId: 'sonar-token') {
+                        
+                            sh 'pwd'
+                            sh 'chmod +x gradlew'
+                            sh './gradlew sonarqube'
                     }
-               }
-            stage('Docker build and push'){
+                    
+                   timeout(time: 1, unit: 'HOURS') {
+                      def qg = waitForQualityGate()
+                      if (qg.status != 'OK') {
+                           echo qg.status
+                           error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                      }
+                    }
+                }  
+            }
+        }
+    stage('Docker build and push'){
                 steps{
                     sh'''
                     docker build -t 176.34.67.226:8081/springapp:${VERSION} .
@@ -28,5 +33,7 @@ pipeline {
                     '''
                 }
             }
-      }
+
+    }
+   
 }
