@@ -1,10 +1,5 @@
 pipeline {
-     agent {
-             docker {
-             image 'openjdk:11'
-               		    }
-          	    }
-    environment{
+     environment{
         VERSION = "${env.BUILD_ID}"
     }
     stages {
