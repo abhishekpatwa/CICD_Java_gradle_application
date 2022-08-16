@@ -28,10 +28,10 @@ pipeline{
     stage('Docker build and push'){
                 steps{
                     sh'''
-                    docker build -t 176.34.67.226:8081/springapp:${VERSION} .
-                    docker login -u admin -p $docker_password 34.125.214.226:8083 
-                    docker push  176.34.67.226:8081/springapp:${VERSION}
-                    docker rmi   176.34.67.226:8081/springapp:${VERSION}
+                    sudo docker build -t 176.34.67.226:8081/springapp:${VERSION} .
+                    sudo docker login -u admin -p $docker_password 34.125.214.226:8083 
+                    sudo docker push  176.34.67.226:8081/springapp:${VERSION}
+                    sudo docker rmi   176.34.67.226:8081/springapp:${VERSION}
 
                     '''
                 }
