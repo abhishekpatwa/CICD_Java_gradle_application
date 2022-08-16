@@ -1,15 +1,14 @@
 pipeline {
-    agent any
+     agent {
+             docker {
+             image 'openjdk:11'
+               		    }
+          	    }
     environment{
         VERSION = "${env.BUILD_ID}"
     }
     stages {
           stage('Building') {
-            agent {
-                    docker {
-                	    image 'openjdk:11'
-               		    }
-          	    }
              steps {
                   sh 'chmod +x gradlew'
                   sh "./gradlew build   |  tee output.log"
