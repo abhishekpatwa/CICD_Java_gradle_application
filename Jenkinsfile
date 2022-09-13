@@ -16,7 +16,8 @@ pipeline{
                     }
                     
                    timeout(time: 1, unit: 'HOURS') {
-                      def qg = waitForQualityGate()
+                      //def qg = waitForQualityGate()
+                       def qg == 'OK'
                       if (qg.status != 'OK') {
                            echo qg.status
                            error "Pipeline aborted due to quality gate failure: ${qg.status}"
